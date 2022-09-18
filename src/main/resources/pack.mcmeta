@@ -1,6 +1,6 @@
 {
   "pack": {
-    "description": "mimi_mod_midi_fix resources",
+    "description": "${mod_description}",
     "pack_format": 8,
     "forge:resource_pack_format": 8,
     "forge:data_pack_format": 9
