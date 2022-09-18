@@ -212,17 +212,15 @@ if (ENV.CURSEFORGE_KEY) {
         apiKey = ENV.CURSEFORGE_KEY
         project {
             id = '677579'
-            changelog = 'Add missing event listener registrations to MidiInputManager.'
+            changelogType = 'markdown'
+            changelog = file('changelog.md')
             releaseType = 'release'
-
-            options {
-                debug = true
-            }
+            addGameVersion '1.18.2'
 
             mainArtifact(jar) {
                 displayName = "MMME version: $project.version"
                 relations {
-                    requireDependency 'mimi-mod'
+                    requiredDependency 'mimi-mod'
                 }
             }
         }
