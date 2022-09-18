@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.favorlock.mmmf.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "mimi_mod_midi_fix.refmap.json",
+  "mixins": [
+    "MidiInputManagerMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
