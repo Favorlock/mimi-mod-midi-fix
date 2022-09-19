@@ -19,11 +19,17 @@ plugins {
 
 apply plugin: 'org.spongepowered.mixin'
 
-def artifactId = mod_name.replaceAll(' ', '')
+apply from: 'gradle/property_helper.gradle'
+
+def modNameShort = mod_name.replaceAll(' ', '')
 
 java {
-    archivesBaseName = artifactId
     toolchain.languageVersion = JavaLanguageVersion.of(java_version)
+}
+
+tasks.withType(Jar).configureEach {
+    archivesBaseName = "${modNameShort}"
+    classifier = "Forge-${minecraft_version}"
 }
 
 minecraft {
@@ -141,7 +147,7 @@ dependencies {
 jar {
     manifest {
         attributes([
-                "Specification-Title"     : artifactId,
+                "Specification-Title"     : modNameShort,
                 "Specification-Vendor"    : mod_authors,
                 "Specification-Version"   : version,
                 "Implementation-Title"    : mod_name,
@@ -186,6 +192,38 @@ task publishCurseForge(type: TaskPublishCurseForge) {
     doLast {
         if (project.hasProperty('mod_homepage')) {
             project.ext.curse_file_url = "${mod_homepage}/files/${mainFile.curseFileId}"
+        }
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifact jar
+        }
+    }
+
+    repositories {
+        maven {
+            // Sets maven credentials if they are provided. This is generally
+            // only used for external/remote uploads.
+            if (project.hasProperty('maven_username') && project.hasProperty('maven_password')) {
+
+                credentials {
+
+                    username findProperty('maven_username')
+                    password findProperty('maven_password')
+                }
+            }
+
+            url = getDefaultString('maven_url', 'undefined', true)
+        }
+
+        if (project.hasProperty('maven_local_url')) {
+            maven {
+                name = 'projectLocal'
+                url = file(maven_local_url).absolutePath
+            }
         }
     }
 }
